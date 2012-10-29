@@ -3,17 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <name>pride-web-utils</name>
+    <groupId>uk.ac.ebi.pride.web</groupId>
+    <artifactId>pride-web-utils</artifactId>
+    <version>0.1</version>
+    <packaging>jar</packaging>
+    <url>http://www.ebi.ac.uk/pride</url>
 
     <parent>
         <groupId>uk.ac.ebi.pride.maven</groupId>
         <artifactId>pride-base-master</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
-    <groupId>uk.ac.ebi.pride.web</groupId>
-    <artifactId>pride-web-utils</artifactId>
-    <version>0.1</version>
-    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
