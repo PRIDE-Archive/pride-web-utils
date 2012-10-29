@@ -6,7 +6,7 @@
     <name>pride-web-utils</name>
     <groupId>uk.ac.ebi.pride.web</groupId>
     <artifactId>pride-web-utils</artifactId>
-    <version>0.1</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <url>http://www.ebi.ac.uk/pride</url>
 
