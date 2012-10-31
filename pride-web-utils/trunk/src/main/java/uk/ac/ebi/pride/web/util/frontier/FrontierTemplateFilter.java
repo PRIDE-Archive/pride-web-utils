@@ -34,12 +34,8 @@ public class FrontierTemplateFilter implements Filter {
 
     @SuppressWarnings("RedundantStringConstructorCall")
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        //HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-
-        @SuppressWarnings("unchecked")
-        Map<String, String[]> parms = httpRequest.getParameterMap();
-
 
         GenericResponseWrapper wrapper = new GenericResponseWrapper(httpResponse);
         String content = wrapper.getContentType();
