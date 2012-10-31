@@ -5,19 +5,17 @@ import org.apache.commons.logging.LogFactory;
 import uk.ac.ebi.pride.web.util.callback.filter.GenericResponseWrapper;
 
 import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Map;
 
 /**
  * @author Jose A Dianes
  * @author Antonio Fabregat
  *
  */
+@SuppressWarnings("UnusedDeclaration")
 public class FrontierTemplateFilter implements Filter {
 
     private static Log log = LogFactory.getLog(FrontierTemplateFilter.class);
@@ -76,7 +74,7 @@ public class FrontierTemplateFilter implements Filter {
         StringBuilder stringBuilder = new StringBuilder();
         String ls = System.getProperty("line.separator");
 
-        String line = null;
+        String line;
         while ((line = reader.readLine()) != null) {
             stringBuilder.append(line);
             stringBuilder.append(ls);
