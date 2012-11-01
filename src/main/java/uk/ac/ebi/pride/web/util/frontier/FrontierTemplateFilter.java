@@ -2,7 +2,7 @@ package uk.ac.ebi.pride.web.util.frontier;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import uk.ac.ebi.pride.web.util.callback.filter.GenericResponseWrapper;
+import org.springframework.core.io.Resource;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
@@ -14,15 +14,18 @@ import java.net.URLConnection;
  * @author Jose A Dianes
  * @author Antonio Fabregat
  *
+ * Have a look here: http://www.oracle.com/technetwork/java/filters-137243.html
+ * at the section 'Programming Customized Requests and Responses'
+ *
  */
 @SuppressWarnings("UnusedDeclaration")
 public class FrontierTemplateFilter implements Filter {
 
     private static Log log = LogFactory.getLog(FrontierTemplateFilter.class);
 
-    private File jsonConfig;
+    private Resource jsonConfig;
 
-    public FrontierTemplateFilter(File jsonConfig) {
+    public void setJsonConfig(Resource jsonConfig) {
         this.jsonConfig = jsonConfig;
     }
 
@@ -32,16 +35,29 @@ public class FrontierTemplateFilter implements Filter {
 
     @SuppressWarnings("RedundantStringConstructorCall")
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        //HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        GenericResponseWrapper wrapper = new GenericResponseWrapper(httpResponse);
-        String content = wrapper.getContentType();
-        String html = getFrontierTemplate().replace("##contentHTML##", content);
-        OutputStream out = httpResponse.getOutputStream();
-        out.write(html.getBytes());
+        // get a writer to write into the response output
+        PrintWriter out = response.getWriter();
 
-        //chain.doFilter(request, response);
+        // create a char wrapper to the response
+        CharResponseWrapper wrapper = new CharResponseWrapper((HttpServletResponse) response);
+
+        // do the filter in order to get the response into the wrapper
+        chain.doFilter(request, wrapper);
+
+        // get the frontier template and write it together with the response into a char writer
+        CharArrayWriter caw = new CharArrayWriter();
+        String frontierTemplate = getFrontierTemplate();
+        caw.write(frontierTemplate.substring(0, frontierTemplate.indexOf("##contentHTML##")-1));
+        caw.write(wrapper.toString()); // insert the response (i.e. the JSP)
+        caw.write(frontierTemplate.substring(frontierTemplate.indexOf("##contentHTML##")+15, frontierTemplate.length()));
+
+        // put the char writer content into the response/wrapper output
+        response.setContentLength(caw.toString().length());
+        out.write(caw.toString());
+
+        out.close();
+
     }
 
     public void destroy() {}
@@ -70,7 +86,7 @@ public class FrontierTemplateFilter implements Filter {
 
     private String getWebConfigurationJSON() throws IOException {
 
-        BufferedReader reader = new BufferedReader(new FileReader(this.jsonConfig));
+        BufferedReader reader = new BufferedReader(new FileReader(this.jsonConfig.getFile()));
         StringBuilder stringBuilder = new StringBuilder();
         String ls = System.getProperty("line.separator");
 
