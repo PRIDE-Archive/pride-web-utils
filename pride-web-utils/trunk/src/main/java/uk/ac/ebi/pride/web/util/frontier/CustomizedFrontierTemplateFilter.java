@@ -28,7 +28,7 @@ public class CustomizedFrontierTemplateFilter extends FrontierTemplateFilter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (request instanceof HttpServletRequest) {
             String url = ((HttpServletRequest)request).getRequestURL().toString();
-            //only do injection if does not contain the jnlp
+            //only do injection if does not contain exceptions
             if (matchesExceptions(url))
                 chain.doFilter(request, response);
             else
