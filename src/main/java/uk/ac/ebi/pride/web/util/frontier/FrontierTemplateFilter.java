@@ -3,6 +3,7 @@ package uk.ac.ebi.pride.web.util.frontier;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.Resource;
+import org.springframework.util.Assert;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
@@ -24,9 +25,18 @@ public class FrontierTemplateFilter implements Filter {
     private static Log log = LogFactory.getLog(FrontierTemplateFilter.class);
 
     private Resource jsonConfig;
+    private String templateServiceAddress;
 
     public void setJsonConfig(Resource jsonConfig) {
         this.jsonConfig = jsonConfig;
+    }
+
+    public Resource getJsonConfig() {
+        return jsonConfig;
+    }
+
+    public void setTemplateServiceAddress(String templateServiceAddress) {
+        this.templateServiceAddress = templateServiceAddress;
     }
 
     public void init(FilterConfig fConfig) throws ServletException {
@@ -35,6 +45,7 @@ public class FrontierTemplateFilter implements Filter {
 
     @SuppressWarnings("RedundantStringConstructorCall")
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        Assert.notNull(this.templateServiceAddress, "Template service address cannot be null");
 
         // get a writer to write into the response output
         PrintWriter out = response.getWriter();
@@ -63,7 +74,7 @@ public class FrontierTemplateFilter implements Filter {
     public void destroy() {}
 
     private String getFrontierTemplate() throws IOException {
-        URL url = new URL("http://wwwdev.ebi.ac.uk/frontier/template-service/templates/services/web.html");
+        URL url = new URL(this.templateServiceAddress);
         // make post mode connection
         URLConnection urlc = url.openConnection();
         urlc.setDoOutput(true);
