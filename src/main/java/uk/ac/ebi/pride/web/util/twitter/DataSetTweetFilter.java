@@ -28,7 +28,7 @@ public class DataSetTweetFilter implements TweetFilter {
             Tweet tweet = tweetIter.next();
             String tweetText = tweet.getText();
             if (tweetText == null || tweetText.toLowerCase().contains(filterStr)) {
-                tweets.remove(tweet);
+                tweetIter.remove();
             }
         }
 
