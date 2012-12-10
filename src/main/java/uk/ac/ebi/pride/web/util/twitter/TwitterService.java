@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.social.twitter.api.TimelineOperations;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
+import org.springframework.social.twitter.api.impl.TwitterTemplate;
 import org.springframework.util.Assert;
 
 import java.util.*;
@@ -27,26 +28,22 @@ public class TwitterService {
 
     private final Set<TweetTextFormatter> tweetTextFormatters = new HashSet<TweetTextFormatter>();
 
-    public TwitterService(Twitter twitter,
-                          Collection<String> twitterAccounts) {
-        this(twitter, twitterAccounts, null, null);
+    public TwitterService(Collection<String> twitterAccounts) {
+        this(twitterAccounts, null, null);
     }
 
-    public TwitterService(Twitter twitter,
-                          Collection<String> twitterAccounts,
+    public TwitterService(Collection<String> twitterAccounts,
                           Collection<TweetTextFormatter> tweetTextFormatters) {
-        this(twitter, twitterAccounts, null, tweetTextFormatters);
+        this(twitterAccounts, null, tweetTextFormatters);
     }
 
-    public TwitterService(Twitter twitter,
-                          Collection<String> twitterAccounts,
+    public TwitterService(Collection<String> twitterAccounts,
                           Collection<TweetFilter> tweetFilters,
                           Collection<TweetTextFormatter> tweetTextFormatters) {
-        Assert.notNull(twitter, "Twitter template cannot be null");
         Assert.notNull(twitterAccounts, "Twitter accounts cannot be null");
         Assert.notEmpty(twitterAccounts, "Twitter accounts cannot be empty");
 
-        this.twitter = twitter;
+        this.twitter = new TwitterTemplate();
         this.twitterAccounts.addAll(twitterAccounts);
 
         if (tweetFilters != null && !tweetFilters.isEmpty()) {
