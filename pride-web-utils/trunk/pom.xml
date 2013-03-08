@@ -10,7 +10,7 @@
     </parent>
     <groupId>uk.ac.ebi.pride.web</groupId>
     <artifactId>pride-web-utils</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
     <name>pride-web-utils</name>
     <url>http://www.ebi.ac.uk/pride</url>

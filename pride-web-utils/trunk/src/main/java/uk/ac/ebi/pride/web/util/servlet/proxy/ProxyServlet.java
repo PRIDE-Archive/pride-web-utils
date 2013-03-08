@@ -29,6 +29,10 @@ import java.util.zip.GZIPInputStream;
  * <p/>
  * Patched to skip "Transfer-Encoding: chunked" headers, and avoid double slashes
  * in proxied URL's.
+ *
+ * Modified for use in PRIDE projects by
+ * @author Antonio Fabregat (fabregat@ebi.ac.uk)
+ * @author Florian Reisinger (florian@ebi.ac.uk)
  */
 @SuppressWarnings("UnusedDeclaration")
 public class ProxyServlet extends HttpServlet {
