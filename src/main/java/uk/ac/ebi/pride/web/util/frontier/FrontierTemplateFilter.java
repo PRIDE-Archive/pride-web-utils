@@ -10,10 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 
 /**
  * @author Jose A Dianes
  * @author Antonio Fabregat
+ * @author Florian Reisinger
  *
  * Have a look here: http://www.oracle.com/technetwork/java/filters-137243.html
  * at the section 'Programming Customized Requests and Responses'
@@ -59,8 +61,11 @@ public class FrontierTemplateFilter implements Filter {
         // get the frontier template and write it together with the response into a char writer
         CharArrayWriter caw = new CharArrayWriter();
         String frontierTemplate = getFrontierTemplate();
+        // write the template up to the content placeholder
         caw.write(frontierTemplate.substring(0, frontierTemplate.indexOf("##contentHTML##")-1));
-        caw.write(wrapper.toString()); // insert the response (i.e. the JSP)
+         // insert the response (i.e. the JSP)
+        caw.write(wrapper.toString());
+        // write the rest of the template (starting AFTER the content placeholder)
         caw.write(frontierTemplate.substring(frontierTemplate.indexOf("##contentHTML##")+15, frontierTemplate.length()));
 
         // put the char writer content into the response/wrapper output
@@ -74,12 +79,13 @@ public class FrontierTemplateFilter implements Filter {
     public void destroy() {}
 
     private String getFrontierTemplate() throws IOException {
+        // ToDo: introduce a caching mechanism for the templates?
         URL url = new URL(this.templateServiceAddress);
         // make post mode connection
         URLConnection urlc = url.openConnection();
         urlc.setDoOutput(true);
         urlc.setAllowUserInteraction(false);
-        OutputStreamWriter wr = new OutputStreamWriter(urlc.getOutputStream());
+        Writer wr = new OutputStreamWriter(urlc.getOutputStream());
         wr.write(getWebConfigurationJSON());
         wr.flush();
 
@@ -107,7 +113,7 @@ public class FrontierTemplateFilter implements Filter {
             stringBuilder.append(ls);
         }
 
-        return stringBuilder.toString();
+        return URLEncoder.encode(stringBuilder.toString(), "ASCII");
     }
 
 }

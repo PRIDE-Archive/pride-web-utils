@@ -16,11 +16,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: dani
+ * @author  dani@ebi.ac.uk
  * Date: 19/11/12
- * Time: 16:21
- * To change this template use File | Settings | File Templates.
  *
  * UPDATE: jadianes - added 'exceptions'
  */
@@ -80,6 +77,7 @@ public class CustomizedFrontierTemplateFilter extends FrontierTemplateFilter {
 
         while (!matches && it.hasNext()) {
             String exception = it.next();
+            // ToDo: perhaps allow for wild cards and whole directories to be recognised as exceptions
             matches = url.contains(exception);
         }
 
