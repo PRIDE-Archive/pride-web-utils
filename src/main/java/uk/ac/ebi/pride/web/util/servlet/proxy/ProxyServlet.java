@@ -405,7 +405,7 @@ public class ProxyServlet extends HttpServlet {
                 intProxyResponseCode = HttpServletResponse.SC_OK;
                 httpServletResponse.setHeader(STRING_LOCATION_HEADER, response);
             } else {
-                response = new String(ungzip(httpMethodProxyRequest.getResponseBody()));
+                response = new String(ungzip(httpMethodProxyRequest.getResponseBodyAsStream()));
             }
             httpServletResponse.setContentLength(response.length());
         }else{
@@ -441,9 +441,9 @@ public class ProxyServlet extends HttpServlet {
      * @return an ungzipped byte[]
      * @throws java.io.IOException when something bad happens
      */
-    private byte[] ungzip(final byte[] gzipped) throws IOException {
-        final GZIPInputStream inputStream = new GZIPInputStream(new ByteArrayInputStream(gzipped));
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(gzipped.length);
+    private byte[] ungzip(final InputStream gzipped) throws IOException {
+        final GZIPInputStream inputStream = new GZIPInputStream(gzipped);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         final byte[] buffer = new byte[FOUR_KB];
         int bytesRead = 0;
         while (bytesRead != -1) {
@@ -606,3 +606,5 @@ public class ProxyServlet extends HttpServlet {
     }
 
 }
+
+
