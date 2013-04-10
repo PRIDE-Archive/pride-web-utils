@@ -131,10 +131,10 @@ public class ProxyServlet extends HttpServlet {
 
     /**
      * Performs an HTTP GET request
-     * @param httpServletRequest The {@link HttpServletRequest} object passed
+     * @param httpServletRequest The {@link javax.servlet.http.HttpServletRequest} object passed
      *                            in by the servlet engine representing the
      *                            client request to be proxied
-     * @param httpServletResponse The {@link HttpServletResponse} object by which
+     * @param httpServletResponse The {@link javax.servlet.http.HttpServletResponse} object by which
      *                             we can send a proxied response to the client
      */
     public void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
@@ -318,8 +318,7 @@ public class ProxyServlet extends HttpServlet {
         }
 
         String encoding = httpServletRequest.getCharacterEncoding();
-        debug("POST Content Type: " + contentType + " Encoding: " + encoding,
-                "Content: " + postContent);
+        debug("POST Content Type: " + contentType + " Encoding: " + encoding, "Content: " + postContent);
         StringRequestEntity entity;
         try {
             entity = new StringRequestEntity(postContent, contentType, encoding);
@@ -350,9 +349,6 @@ public class ProxyServlet extends HttpServlet {
         httpMethodProxyRequest.setFollowRedirects(false);
         // Execute the request
         int intProxyResponseCode = httpClient.executeMethod(httpMethodProxyRequest);
-
-//        String response = httpMethodProxyRequest.getResponseBodyAsString();
-        String response = IOUtils.toString(httpMethodProxyRequest.getResponseBodyAsStream(), "UTF-8");
 
         // Check if the proxy response is a redirect
         // The following code is adapted from org.tigris.noodle.filters.CheckForRedirect
@@ -399,8 +395,8 @@ public class ProxyServlet extends HttpServlet {
             }
         }
 
+        String response;
         List<Header> responseHeaders = Arrays.asList(headerArrayResponse);
-
         if (isBodyParameterGzipped(responseHeaders)) {
             debug("GZipped: true");
             if (!followRedirects && intProxyResponseCode == HttpServletResponse.SC_MOVED_TEMPORARILY) {
@@ -409,19 +405,18 @@ public class ProxyServlet extends HttpServlet {
                 intProxyResponseCode = HttpServletResponse.SC_OK;
                 httpServletResponse.setHeader(STRING_LOCATION_HEADER, response);
             } else {
-                response = IOUtils.toString(httpMethodProxyRequest.getResponseBodyAsStream(), "UTF-8");
-                //response = new String(ungzip(httpMethodProxyRequest.getResponseBodyAsStream()));
+                response = new String(ungzip(httpMethodProxyRequest.getResponseBody()));
             }
             httpServletResponse.setContentLength(response.length());
+        }else{
+            response = IOUtils.toString(httpMethodProxyRequest.getResponseBodyAsStream(), "UTF-8");
         }
 
         // Send the content to the client
-        debug("Received status code: " + intProxyResponseCode,
-                "Response: " + response);
+        debug("Received status code: " + intProxyResponseCode, "Response: " + response);
 
         httpServletResponse.getWriter().write(response);
     }
-
 
     /**
      * The response body will be assumed to be gzipped if the GZIP header has been set.
@@ -462,8 +457,6 @@ public class ProxyServlet extends HttpServlet {
         byteArrayOutputStream.close();
         return ungzipped;
     }
-
-
 
     public String getServletInfo() {
         return "Jason's Proxy Servlet";
@@ -522,11 +515,6 @@ public class ProxyServlet extends HttpServlet {
         if (!removePrefix) {
             stringProxyURL += stringPrefixPath + path;
         }
-
-//        replaced by above
-//        if (!removePrefix) {
-//            stringProxyURL += stringPrefixPath+httpServletRequest.getServletPath();
-//        }
         stringProxyURL += "/";
 
         // Handle the path given to the servlet
@@ -544,20 +532,6 @@ public class ProxyServlet extends HttpServlet {
             // remove the trailing '/' we added before
             stringProxyURL = stringProxyURL.substring(0,stringProxyURL.length()-1);
         }
-
-//        replaced by above
-//        if (pathInfo != null && pathInfo.startsWith("/")) {
-//            if (stringProxyURL != null && stringProxyURL.endsWith("/")) {
-//                // avoid double '/'
-//                stringProxyURL += pathInfo.substring(1);
-//            }
-//        } else {
-//            if (pathInfo != null)
-//                stringProxyURL += httpServletRequest.getPathInfo();
-//            else {
-//                stringProxyURL = stringProxyURL.substring(0,stringProxyURL.length()-1);
-//            }
-//        }
 
         // Handle the query string
         if (httpServletRequest.getQueryString() != null) {
