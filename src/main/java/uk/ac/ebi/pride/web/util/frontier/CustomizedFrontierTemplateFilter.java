@@ -43,7 +43,7 @@ public class CustomizedFrontierTemplateFilter extends FrontierTemplateFilter {
             // choose filter based on authentication state
             if (this.jsonConfigAuthenticated != null) {
                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                if (!(auth instanceof AnonymousAuthenticationToken)) {
+                if (auth != null && !(auth instanceof AnonymousAuthenticationToken)) {
                     // userDetails = auth.getPrincipal()
                     //only do injection if does not contain exceptions
                     this.setJsonConfig(this.jsonConfigAuthenticated);
