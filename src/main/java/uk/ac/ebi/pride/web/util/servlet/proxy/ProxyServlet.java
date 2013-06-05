@@ -395,9 +395,9 @@ public class ProxyServlet extends HttpServlet {
             }
         }
 
-        String response;
         List<Header> responseHeaders = Arrays.asList(headerArrayResponse);
         if (isBodyParameterGzipped(responseHeaders)) {
+            String response;
             debug("GZipped: true");
             if (!followRedirects && intProxyResponseCode == HttpServletResponse.SC_MOVED_TEMPORARILY) {
                 response = httpMethodProxyRequest.getResponseHeader(STRING_LOCATION_HEADER).getValue();
@@ -408,14 +408,15 @@ public class ProxyServlet extends HttpServlet {
                 response = new String(ungzip(httpMethodProxyRequest.getResponseBodyAsStream()));
             }
             httpServletResponse.setContentLength(response.length());
+            // Send the content to the client
+            debug("Received status code: " + intProxyResponseCode, "Response: " + response);
+            httpServletResponse.getWriter().write(response);
         }else{
-            response = IOUtils.toString(httpMethodProxyRequest.getResponseBodyAsStream(), "UTF-8");
+            byte[] aux = IOUtils.toByteArray(httpMethodProxyRequest.getResponseBodyAsStream());
+            httpServletResponse.getOutputStream().write(aux);
+            //response = IOUtils.toString(httpMethodProxyRequest.getResponseBodyAsStream(), "UTF-8");
+            //httpServletResponse.getWriter().write(response);
         }
-
-        // Send the content to the client
-        debug("Received status code: " + intProxyResponseCode, "Response: " + response);
-
-        httpServletResponse.getWriter().write(response);
     }
 
     /**
