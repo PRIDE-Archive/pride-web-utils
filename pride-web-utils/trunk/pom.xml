@@ -10,10 +10,16 @@
     </parent>
     <groupId>uk.ac.ebi.pride.web</groupId>
     <artifactId>pride-web-utils</artifactId>
-    <version>1.3.1-SNAPSHOT</version>
+    <version>1.3.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>pride-web-utils</name>
     <url>http://www.ebi.ac.uk/pride</url>
+
+    <scm>
+        <connection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride_r/pride-web-utils/trunk</connection>
+        <developerConnection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride_r/pride-web-utils/trunk</developerConnection>
+        <url>https://svn.ebi.ac.uk/pride-repo/pride_r/pride-web-utils/trunk</url>
+    </scm>
 
 
     <dependencies>
@@ -43,7 +49,6 @@
         <dependency>
             <groupId>org.springframework.social</groupId>
             <artifactId>spring-social-twitter</artifactId>
-            <version>1.0.5.RELEASE</version>
         </dependency>
 
         <dependency>
