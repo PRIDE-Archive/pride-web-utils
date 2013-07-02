@@ -6,7 +6,6 @@ import org.springframework.social.twitter.api.TimelineOperations;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.api.impl.TwitterTemplate;
-import org.springframework.util.Assert;
 
 import java.util.*;
 
@@ -24,27 +23,25 @@ public class TwitterService {
 
     private final Set<TweetFilter> tweetFilters = new HashSet<TweetFilter>();
 
-    private final Set<String> twitterAccounts = new HashSet<String>();
-
     private final Set<TweetTextFormatter> tweetTextFormatters = new HashSet<TweetTextFormatter>();
 
-    public TwitterService(Collection<String> twitterAccounts) {
-        this(twitterAccounts, null, null);
+    public TwitterService(String consumerKey, String consumerSecret,
+                          String accessToken, String accessTokenSecret) {
+        this(consumerKey, consumerSecret, accessToken, accessTokenSecret, null, null);
     }
 
-    public TwitterService(Collection<String> twitterAccounts,
+    public TwitterService(String consumerKey, String consumerSecret,
+                          String accessToken, String accessTokenSecret,
                           Collection<TweetTextFormatter> tweetTextFormatters) {
-        this(twitterAccounts, null, tweetTextFormatters);
+        this(consumerKey, consumerSecret, accessToken, accessTokenSecret, null, tweetTextFormatters);
     }
 
-    public TwitterService(Collection<String> twitterAccounts,
+    public TwitterService(String consumerKey, String consumerSecret,
+                          String accessToken, String accessTokenSecret,
                           Collection<TweetFilter> tweetFilters,
                           Collection<TweetTextFormatter> tweetTextFormatters) {
-        Assert.notNull(twitterAccounts, "Twitter accounts cannot be null");
-        Assert.notEmpty(twitterAccounts, "Twitter accounts cannot be empty");
 
-        this.twitter = new TwitterTemplate();
-        this.twitterAccounts.addAll(twitterAccounts);
+        this.twitter = new TwitterTemplate(consumerKey, consumerSecret, accessToken, accessTokenSecret);
 
         if (tweetFilters != null && !tweetFilters.isEmpty()) {
             this.tweetFilters.addAll(tweetFilters);
@@ -73,11 +70,9 @@ public class TwitterService {
 
     private List<Tweet> getTweetsByTimeLine() {
         List<Tweet> tweets = new ArrayList<Tweet>();
-        TimelineOperations timelineOperations = twitter.timelineOperations();
 
-        for (String twitterAccount : twitterAccounts) {
-            tweets.addAll(timelineOperations.getUserTimeline(twitterAccount));
-        }
+        TimelineOperations timelineOperations = twitter.timelineOperations();
+        tweets.addAll(timelineOperations.getHomeTimeline());
 
         return tweets;
     }

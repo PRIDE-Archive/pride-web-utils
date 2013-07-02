@@ -2,6 +2,7 @@ package uk.ac.ebi.pride.web.util.twitter;
 
 import org.springframework.social.twitter.api.Tweet;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -17,15 +18,21 @@ public class HyperLinkTweetTextFormatter implements TweetTextFormatter {
 
     @Override
     public Collection<Tweet> format(Collection<Tweet> tweets) {
+        Collection<Tweet> newTweets = new ArrayList<Tweet>(tweets.size());
+
         for (Tweet tweet : tweets) {
-            formatTweetText(tweet);
+            newTweets.add(formatTweetText(tweet));
         }
-        return tweets;
+        return newTweets;
     }
 
-    private void formatTweetText(Tweet tweet) {
+    private Tweet formatTweetText(Tweet tweet) {
         String tweetText = tweet.getText();
         tweetText = tweetText.replaceAll(HYPERLINK_PATTERN, "<a href=\"$1\">$1</a>");
-        tweet.setText(tweetText);
+        return new Tweet(tweet.getId(), tweetText,
+                         tweet.getCreatedAt(), tweet.getFromUser(),
+                         tweet.getProfileImageUrl(), tweet.getToUserId(),
+                         tweet.getFromUserId(), tweet.getLanguageCode(),
+                         tweet.getSource());
     }
 }
