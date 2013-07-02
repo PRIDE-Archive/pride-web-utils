@@ -52,9 +52,9 @@ public class TwitterService {
         }
     }
 
-    public List<Tweet> queryForTweets() {
+    public List<Tweet> queryForTweets(int numberOfTweets) {
         // get all the tweets of all the twitter account
-        List<Tweet> tweets = getTweetsByTimeLine();
+        List<Tweet> tweets = getTweetsByTimeLine(numberOfTweets);
 
         // filter out unwanted tweets
         filterTweets(tweets);
@@ -68,11 +68,11 @@ public class TwitterService {
         return tweets;
     }
 
-    private List<Tweet> getTweetsByTimeLine() {
+    private List<Tweet> getTweetsByTimeLine(int numberOfTweets) {
         List<Tweet> tweets = new ArrayList<Tweet>();
 
         TimelineOperations timelineOperations = twitter.timelineOperations();
-        tweets.addAll(timelineOperations.getHomeTimeline());
+        tweets.addAll(timelineOperations.getUserTimeline(numberOfTweets));
 
         return tweets;
     }
