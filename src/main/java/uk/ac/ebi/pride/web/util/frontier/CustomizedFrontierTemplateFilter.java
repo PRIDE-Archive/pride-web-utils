@@ -16,14 +16,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author  dani@ebi.ac.uk
- * Date: 19/11/12
- *
- * UPDATE: jadianes - added 'exceptions'
+ * @author dani@ebi.ac.uk
+ *         Date: 19/11/12
+ *         <p/>
+ *         UPDATE: jadianes - added 'exceptions'
  */
 public class CustomizedFrontierTemplateFilter extends FrontierTemplateFilter {
 
-    private List<String> exceptions = new LinkedList();
+    private List<String> exceptions = new LinkedList<String>();
 
     private Resource jsonConfigAuthenticated;
 
@@ -38,26 +38,29 @@ public class CustomizedFrontierTemplateFilter extends FrontierTemplateFilter {
             // backup original JSON config
             Resource originalJsonConfig = this.getJsonConfig();
 
-            String url = ((HttpServletRequest)request).getRequestURL().toString();
+            try {
+                String url = ((HttpServletRequest) request).getRequestURL().toString();
 
-            // choose filter based on authentication state
-            if (this.jsonConfigAuthenticated != null) {
-                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                if (auth != null && !(auth instanceof AnonymousAuthenticationToken)) {
-                    // userDetails = auth.getPrincipal()
-                    //only do injection if does not contain exceptions
-                    this.setJsonConfig(this.jsonConfigAuthenticated);
+                // choose filter based on authentication state
+                if (this.jsonConfigAuthenticated != null) {
+                    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                    if (auth != null && !(auth instanceof AnonymousAuthenticationToken)) {
+                        // userDetails = auth.getPrincipal()
+                        //only do injection if does not contain exceptions
+                        this.setJsonConfig(this.jsonConfigAuthenticated);
+                    }
                 }
+
+                //only do injection if does not contain exceptions
+                if (matchesExceptions(url)) {
+                    chain.doFilter(request, response);
+                } else {
+                    super.doFilter(request, response, chain);
+                }
+            } finally {
+                // restore JSON config
+                this.setJsonConfig(originalJsonConfig);
             }
-
-            //only do injection if does not contain exceptions
-            if (matchesExceptions(url))
-                chain.doFilter(request, response);
-            else
-                super.doFilter(request, response, chain);
-
-            // restore JSON config
-            this.setJsonConfig(originalJsonConfig);
         }
     }
 
@@ -65,7 +68,7 @@ public class CustomizedFrontierTemplateFilter extends FrontierTemplateFilter {
         return exceptions;
     }
 
-    public void setExceptions(List exceptions) {
+    public void setExceptions(List<String> exceptions) {
         this.exceptions = exceptions;
     }
 
