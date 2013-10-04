@@ -23,7 +23,10 @@ public class HyperLinkTweetTextFormatter implements TweetTextFormatter {
         for (Tweet tweet : tweets) {
             newTweets.add(formatTweetText(tweet));
         }
-        return newTweets;
+        tweets.clear();
+        tweets.addAll(newTweets);
+
+        return tweets;
     }
 
     private Tweet formatTweetText(Tweet tweet) {
