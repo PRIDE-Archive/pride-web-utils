@@ -31,7 +31,7 @@ public class HyperLinkTweetTextFormatter implements TweetTextFormatter {
 
     private Tweet formatTweetText(Tweet tweet) {
         String tweetText = tweet.getText();
-        tweetText = tweetText.replaceAll(HYPERLINK_PATTERN, "( <a href=\"$1\">Link</a> )");
+        tweetText = tweetText.replaceAll(HYPERLINK_PATTERN, "<a href=\"$1\">link</a>");
         return new Tweet(tweet.getId(), tweetText,
                          tweet.getCreatedAt(), tweet.getFromUser(),
                          tweet.getProfileImageUrl(), tweet.getToUserId(),
