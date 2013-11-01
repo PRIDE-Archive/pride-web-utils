@@ -387,10 +387,8 @@ public class ProxyServlet extends HttpServlet {
         // Pass response headers back to the client
         Header[] headerArrayResponse = httpMethodProxyRequest.getResponseHeaders();
         for (Header header : headerArrayResponse) {
-            if (header.getName().equals("Transfer-Encoding") && header.getValue().equals("chunked") ||
-                    header.getName().equals("Content-Encoding") && header.getValue().equals("gzip")) {
-                // proxy servlet does not support chunked encoding
-            } else {
+            if ((!header.getName().equals("Transfer-Encoding") || !header.getValue().equals("chunked")) &&
+                    (!header.getName().equals("Content-Encoding") || !header.getValue().equals("gzip"))) {
                 httpServletResponse.setHeader(header.getName(), header.getValue());
             }
         }
@@ -414,8 +412,6 @@ public class ProxyServlet extends HttpServlet {
         }else{
             byte[] aux = IOUtils.toByteArray(httpMethodProxyRequest.getResponseBodyAsStream());
             httpServletResponse.getOutputStream().write(aux);
-            //response = IOUtils.toString(httpMethodProxyRequest.getResponseBodyAsStream(), "UTF-8");
-            //httpServletResponse.getWriter().write(response);
         }
     }
 
