@@ -29,11 +29,11 @@ public class FrontierTemplateFilter implements Filter {
     private Resource jsonConfig;
     private String templateServiceAddress;
 
-    public void setJsonConfig(Resource jsonConfig) {
+    public synchronized void setJsonConfig(Resource jsonConfig) {
         this.jsonConfig = jsonConfig;
     }
 
-    public Resource getJsonConfig() {
+    public synchronized Resource getJsonConfig() {
         return jsonConfig;
     }
 
