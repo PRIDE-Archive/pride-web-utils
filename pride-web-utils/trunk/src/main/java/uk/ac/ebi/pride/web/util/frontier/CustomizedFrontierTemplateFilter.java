@@ -27,7 +27,7 @@ public class CustomizedFrontierTemplateFilter extends FrontierTemplateFilter {
 
     private Resource jsonConfigAuthenticated;
 
-    public void setJsonConfigAuthenticated(Resource jsonConfigAuthenticated) {
+    public synchronized void setJsonConfigAuthenticated(Resource jsonConfigAuthenticated) {
         this.jsonConfigAuthenticated = jsonConfigAuthenticated;
     }
 
@@ -35,33 +35,28 @@ public class CustomizedFrontierTemplateFilter extends FrontierTemplateFilter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (request instanceof HttpServletRequest) {
-            // backup original JSON config
-            Resource originalJsonConfig = this.getJsonConfig();
 
-            try {
-                String url = ((HttpServletRequest) request).getRequestURL().toString();
+            String url = ((HttpServletRequest) request).getRequestURL().toString();
 
-                // choose filter based on authentication state
-                if (this.jsonConfigAuthenticated != null) {
-                    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                    if (auth != null && !(auth instanceof AnonymousAuthenticationToken)) {
-                        // userDetails = auth.getPrincipal()
-                        //only do injection if does not contain exceptions
-                        this.setJsonConfig(this.jsonConfigAuthenticated);
-                    }
-                }
-
-                //only do injection if does not contain exceptions
-                if (matchesExceptions(url)) {
-                    chain.doFilter(request, response);
-                } else {
-                    super.doFilter(request, response, chain);
-                }
-            } finally {
-                // restore JSON config
-                this.setJsonConfig(originalJsonConfig);
+            //only do injection if does not contain exceptions
+            if (matchesExceptions(url)) {
+                chain.doFilter(request, response);
+            } else {
+                super.doFilter(request, response, chain);
             }
         }
+    }
+
+    @Override
+    public synchronized Resource getJsonConfig() {
+        if (jsonConfigAuthenticated != null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && !(auth instanceof AnonymousAuthenticationToken)) {
+                return jsonConfigAuthenticated;
+            }
+        }
+
+        return super.getJsonConfig();
     }
 
     public List getExceptions() {
