@@ -103,7 +103,8 @@ public class FrontierTemplateFilter implements Filter {
 
     private String getWebConfigurationJSON() throws IOException {
 
-        BufferedReader reader = new BufferedReader(new FileReader(this.jsonConfig.getFile()));
+        Resource config = getJsonConfig();
+        BufferedReader reader = new BufferedReader(new FileReader(config.getFile()));
         StringBuilder stringBuilder = new StringBuilder();
         String ls = System.getProperty("line.separator");
 
