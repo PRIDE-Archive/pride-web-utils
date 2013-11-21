@@ -17,11 +17,11 @@ public class RestError {
     /** Internal error code */
     private final int code;
     /** Internal error message */
-    private final String message;
+    private String message;
     /** Error message intended for debugging the error */
-    private final String developerMessage;
+    private String developerMessage;
     /** Url for additional information about the error */
-    private final String moreInfoUrl;
+    private String moreInfoUrl;
     /** Original exception */
     private final Throwable throwable;
 
@@ -67,6 +67,18 @@ public class RestError {
 
     public Throwable getThrowable() {
         return throwable;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setDeveloperMessage(String developerMessage) {
+        this.developerMessage = developerMessage;
+    }
+
+    public void setMoreInfoUrl(String moreInfoUrl) {
+        this.moreInfoUrl = moreInfoUrl;
     }
 
     @Override
