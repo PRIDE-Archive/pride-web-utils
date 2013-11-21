@@ -20,6 +20,10 @@
         <url>https://svn.ebi.ac.uk/pride-repo/pride-web-utils/trunk</url>
     </scm>
 
+    <properties>
+        <http.client.version>4.2.5</http.client.version>
+        <http.mime.version>4.2.2</http.mime.version>
+    </properties>
 
     <dependencies>
         <!-- Spring framework -->
@@ -63,6 +67,13 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-io</artifactId>
+        </dependency>
+
+        <!--http client for post file-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${http.client.version}</version>
         </dependency>
 
     </dependencies>
