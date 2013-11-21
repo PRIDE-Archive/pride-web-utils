@@ -30,7 +30,7 @@ public enum RestErrorRegistry {
     HTTP_MEDIA_TYPE_NOT_ACCEPTABLE(HttpMediaTypeNotAcceptableException.class, HttpStatus.NOT_ACCEPTABLE, 10005, "error.media.type.unacceptable", null),
     HTTP_MEDIA_TYPE_NOT_SUPPORTED(HttpMediaTypeNotSupportedException.class, HttpStatus.UNSUPPORTED_MEDIA_TYPE, 10006, "error.unsupported.media.type", null),
     ACCESS_DENY_EXCEPTION(AccessDeniedException.class, HttpStatus.UNAUTHORIZED, 10007, "error.access.denied", null),
-    METHOD_ARGUMENT_NOT_VALID_EXCEPTION(MethodArgumentNotValidException.class, HttpStatus.BAD_REQUEST, 1008, "error.request.argument.validation", null);
+    METHOD_ARGUMENT_NOT_VALID_EXCEPTION(MethodArgumentNotValidException.class, HttpStatus.BAD_REQUEST, 10008, "error.request.argument.validation", null);
 
     private Class<? extends Exception> exceptionClass;
     private HttpStatus status;
