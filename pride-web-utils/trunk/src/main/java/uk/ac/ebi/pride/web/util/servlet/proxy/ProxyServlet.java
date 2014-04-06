@@ -296,7 +296,7 @@ public class ProxyServlet extends HttpServlet {
         for (;;) {
             String line = reader.readLine();
             if (line == null) break;
-            content.append(line);
+            content.append(line + "\n");
         }
 
         String contentType = httpServletRequest.getContentType();
