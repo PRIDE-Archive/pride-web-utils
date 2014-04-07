@@ -291,16 +291,8 @@ public class ProxyServlet extends HttpServlet {
     private void handleContentPost(PostMethod postMethodProxyRequest,
                                    HttpServletRequest httpServletRequest)
             throws IOException, ServletException {
-        StringBuilder content = new StringBuilder();
-        BufferedReader reader = httpServletRequest.getReader();
-        for (;;) {
-            String line = reader.readLine();
-            if (line == null) break;
-            content.append(line + "\n");
-        }
-
         String contentType = httpServletRequest.getContentType();
-        String postContent = content.toString();
+        String postContent = IOUtils.toString(httpServletRequest.getReader());;
 
         // Hack
         if (contentType.startsWith("text/x-gwt-rpc")) {
