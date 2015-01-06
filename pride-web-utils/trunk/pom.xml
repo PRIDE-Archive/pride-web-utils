@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>uk.ac.ebi.pride.web</groupId>
     <artifactId>pride-web-utils</artifactId>
-    <version>1.3.11-SNAPSHOT</version>
+    <version>1.3.11</version>
     <packaging>jar</packaging>
     <name>pride-web-utils</name>
     <url>http://www.ebi.ac.uk/pride</url>
