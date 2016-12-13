@@ -11,17 +11,10 @@
     <parent>
         <groupId>uk.ac.ebi.pride.maven</groupId>
         <artifactId>pride-base-master</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.5</version>
     </parent>
 
-    <scm>
-        <connection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-web-utils/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.ebi.ac.uk/pride-repo/pride-web-utils/trunk</developerConnection>
-        <url>https://svn.ebi.ac.uk/pride-repo/pride-web-utils/trunk</url>
-    </scm>
-
     <properties>
-        <http.client.version>4.2.5</http.client.version>
         <http.mime.version>4.2.2</http.mime.version>
         <commons.io.version>2.4</commons.io.version>
     </properties>
@@ -56,11 +49,6 @@
         </dependency>
 
         <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
         </dependency>
@@ -73,11 +61,20 @@
 
         <!--http client for post file-->
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${http.client.version}</version>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -85,16 +82,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin}</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.1.2</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -109,7 +106,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.2.1</version>
                 <configuration>
                     <remoteTagging>true</remoteTagging>
                     <goals>deploy</goals>
@@ -119,28 +115,19 @@
     </build>
 
     <repositories>
-        <!-- EBI repo -->
         <repository>
-            <id>nexus-ebi-repo</id>
-            <name>The EBI internal repository</name>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo/</url>
-            <releases>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
+            <id>nexus-ebi-release-repo</id>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-repo/</url>
         </repository>
-        <!-- EBI SNAPSHOT repo -->
         <repository>
             <id>nexus-ebi-snapshot-repo</id>
-            <name>The EBI internal snapshot repository</name>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo-snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-            </snapshots>
+            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-snapshots/</url>
         </repository>
     </repositories>
 
+    <scm>
+        <connection>scm:git:https://github.com/PRIDE-Archive/pride-web-utils.git</connection>
+        <developerConnection>scm:git:https://github.com/PRIDE-Archive/pride-web-utils.git</developerConnection>
+        <url>https://github.com/PRIDE-Archive/pride-web-utils</url>
+    </scm>
 </project>
