@@ -1,6 +1,6 @@
 package uk.ac.ebi.pride.web.util.twitter;
 
-import org.springframework.social.twitter.api.Tweet;
+import twitter4j.Status;
 
 import java.util.Collection;
 
@@ -13,5 +13,5 @@ import java.util.Collection;
  */
 public interface TweetFilter {
 
-    public Collection<Tweet> filter(Collection<Tweet> tweets);
+    public Collection<Status> filter(Collection<Status> tweets);
 }

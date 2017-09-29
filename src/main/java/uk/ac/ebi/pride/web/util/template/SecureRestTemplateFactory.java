@@ -18,7 +18,7 @@ public final class SecureRestTemplateFactory {
     public static RestTemplate getTemplate(String userName, String password) {
         // setup authentication
         CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        Credentials credentials = new UsernamePasswordCredentials(userName, password);
+        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(userName, password);
         credentialsProvider.setCredentials(AuthScope.ANY, credentials);
 
         // update user summary

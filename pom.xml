@@ -63,7 +63,13 @@
         <dependency>
             <groupId>org.springframework.social</groupId>
             <artifactId>spring-social-twitter</artifactId>
-            <version>1.0.5.RELEASE</version>
+            <version>1.1.2.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.twitter4j</groupId>
+            <artifactId>twitter4j-core</artifactId>
+            <version>RELEASE</version>
         </dependency>
 
         <dependency>
@@ -97,6 +103,12 @@
             <artifactId>pride-logging</artifactId>
             <version>${uk.ac.ebi.pride.architectural.pride-logging.version}</version>
             <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
         </dependency>
     </dependencies>
 

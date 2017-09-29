@@ -1,9 +1,9 @@
 package uk.ac.ebi.pride.web.util.twitter;
 
-import org.springframework.social.twitter.api.Tweet;
+import twitter4j.Status;
 
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.stream.Collectors;
 
 /**
  * {@code DataSetTweetFilter} filters out any tweet which doesn't contain a list of string
@@ -21,18 +21,10 @@ public class DataSetTweetFilter implements TweetFilter {
     }
 
     @Override
-    public Collection<Tweet> filter(Collection<Tweet> tweets) {
-        Iterator<Tweet> tweetIter = tweets.iterator();
-
-        while(tweetIter.hasNext()) {
-            Tweet tweet = tweetIter.next();
-            String tweetText = tweet.getText();
-            if (tweetText == null || !tweetText.toLowerCase().contains(filterStr)) {
-                tweetIter.remove();
-            }
-        }
-
-        return tweets;
+    public Collection<Status> filter(Collection<Status> tweets) {
+        return tweets.stream()
+                .filter(status -> status.getText()!=null && status.getText().toLowerCase().contains(filterStr))
+                .collect(Collectors.toList());
     }
 
     public String getFilterStr() {

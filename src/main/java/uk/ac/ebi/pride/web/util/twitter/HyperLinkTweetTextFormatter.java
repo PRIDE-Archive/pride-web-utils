@@ -1,9 +1,6 @@
 package uk.ac.ebi.pride.web.util.twitter;
 
-import org.springframework.social.twitter.api.Tweet;
-
-import java.util.ArrayList;
-import java.util.Collection;
+import twitter4j.Status;
 
 /**
  * {@code HyperLinkTweetTextFormatter} scans the tweet text and wrap any hyperlinks with
@@ -14,28 +11,10 @@ import java.util.Collection;
  */
 public class HyperLinkTweetTextFormatter implements TweetTextFormatter {
 
-    public static final String HYPERLINK_PATTERN = "((http|https|ftp|mailto):\\S+)";
+  public static final String HYPERLINK_PATTERN = "((http|https|ftp|mailto):\\S+)";
 
-    @Override
-    public Collection<Tweet> format(Collection<Tweet> tweets) {
-        Collection<Tweet> newTweets = new ArrayList<Tweet>(tweets.size());
+  public static String format(Status tweets) {
+    return tweets.getText().replaceAll(HYPERLINK_PATTERN, "<a href=\"$1\">link</a>");
+  }
 
-        for (Tweet tweet : tweets) {
-            newTweets.add(formatTweetText(tweet));
-        }
-        tweets.clear();
-        tweets.addAll(newTweets);
-
-        return tweets;
-    }
-
-    private Tweet formatTweetText(Tweet tweet) {
-        String tweetText = tweet.getText();
-        tweetText = tweetText.replaceAll(HYPERLINK_PATTERN, "<a href=\"$1\">link</a>");
-        return new Tweet(tweet.getId(), tweetText,
-                         tweet.getCreatedAt(), tweet.getFromUser(),
-                         tweet.getProfileImageUrl(), tweet.getToUserId(),
-                         tweet.getFromUserId(), tweet.getLanguageCode(),
-                         tweet.getSource());
-    }
 }
