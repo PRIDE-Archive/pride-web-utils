@@ -11,7 +11,7 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -27,7 +27,7 @@ public enum RestErrorRegistry {
     HTTP_MESSAGE_NOT_READABLE(HttpMessageNotReadableException.class, HttpStatus.BAD_REQUEST, 10000, "error.http.message", null),
     MISSING_SERVLET_REQUEST_PARAMETER(MissingServletRequestParameterException.class, HttpStatus.BAD_REQUEST, 10001, "error.missing.parameter", null),
     MISMATCH_TYPE(TypeMismatchException.class, HttpStatus.BAD_REQUEST, 10002, "error.type.mismatch", null),
-    NO_SUCH_REQUEST_HANDLING_METHOD(NoSuchRequestHandlingMethodException.class, HttpStatus.NOT_FOUND, 10003, "error.no.such.method", null),
+    NO_HANDLER_FOUND_METHOD(NoHandlerFoundException.class, HttpStatus.NOT_FOUND, 10003, "error.no.such.method", null),
     HTTP_REQUEST_METHOD_NOT_SUPPORTED(HttpRequestMethodNotSupportedException.class, HttpStatus.METHOD_NOT_ALLOWED, 10004, "error.unsupported.method", null),
     HTTP_MEDIA_TYPE_NOT_ACCEPTABLE(HttpMediaTypeNotAcceptableException.class, HttpStatus.NOT_ACCEPTABLE, 10005, "error.media.type.unacceptable", null),
     HTTP_MEDIA_TYPE_NOT_SUPPORTED(HttpMediaTypeNotSupportedException.class, HttpStatus.UNSUPPORTED_MEDIA_TYPE, 10006, "error.unsupported.media.type", null),

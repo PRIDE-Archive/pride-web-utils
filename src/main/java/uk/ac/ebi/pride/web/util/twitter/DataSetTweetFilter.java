@@ -12,34 +12,35 @@ import java.util.Iterator;
  * @version $Id$
  */
 public class DataSetTweetFilter implements TweetFilter {
-    public final static String DEFAULT_DATASET_FILTER = "dataset";
 
-    private String filterStr;
+  public static final String DEFAULT_DATASET_FILTER = "dataset";
 
-    public DataSetTweetFilter() {
-        this.filterStr = DEFAULT_DATASET_FILTER;
+  private String filterStr;
+
+  public DataSetTweetFilter() {
+    this.filterStr = DEFAULT_DATASET_FILTER;
+  }
+
+  @Override
+  public Collection<Tweet> filter(Collection<Tweet> tweets) {
+    Iterator<Tweet> tweetIter = tweets.iterator();
+
+    while (tweetIter.hasNext()) {
+      Tweet tweet = tweetIter.next();
+      String tweetText = tweet.getText();
+      if (tweetText == null || !tweetText.toLowerCase().contains(filterStr)) {
+        tweetIter.remove();
+      }
     }
 
-    @Override
-    public Collection<Tweet> filter(Collection<Tweet> tweets) {
-        Iterator<Tweet> tweetIter = tweets.iterator();
+    return tweets;
+  }
 
-        while(tweetIter.hasNext()) {
-            Tweet tweet = tweetIter.next();
-            String tweetText = tweet.getText();
-            if (tweetText == null || !tweetText.toLowerCase().contains(filterStr)) {
-                tweetIter.remove();
-            }
-        }
+  public String getFilterStr() {
+    return filterStr;
+  }
 
-        return tweets;
-    }
-
-    public String getFilterStr() {
-        return filterStr;
-    }
-
-    public void setFilterStr(String filterStr) {
-        this.filterStr = filterStr;
-    }
+  public void setFilterStr(String filterStr) {
+    this.filterStr = filterStr;
+  }
 }

@@ -9,11 +9,12 @@ package uk.ac.ebi.pride.web.util.exception;
  */
 public interface RestErrorResolver {
 
-    /**
-     * Returns a {@code RestError} instance to render as the response body based on the given exception
-     *
-     * @param ex    the exception that was thrown during handler exception
-     * @return a {@code RestError} instance
-     */
-    RestError resolveError(Exception ex);
+  /**
+   * Returns a {@code RestError} instance to render as the response body based on the given
+   * exception
+   *
+   * @param ex the exception that was thrown during handler exception
+   * @return a {@code RestError} instance
+   */
+  RestError resolveError(Exception ex);
 }

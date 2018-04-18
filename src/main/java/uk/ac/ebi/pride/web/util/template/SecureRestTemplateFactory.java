@@ -15,20 +15,21 @@ import org.springframework.web.client.RestTemplate;
  */
 public final class SecureRestTemplateFactory {
 
-    public static RestTemplate getTemplate(String userName, String password) {
-        // setup authentication
-        CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        Credentials credentials = new UsernamePasswordCredentials(userName, password);
-        credentialsProvider.setCredentials(AuthScope.ANY, credentials);
+  public static RestTemplate getTemplate(String userName, String password) {
+    // setup authentication
+    CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+    Credentials credentials = new UsernamePasswordCredentials(userName, password);
+    credentialsProvider.setCredentials(AuthScope.ANY, credentials);
 
-        // update user summary
-        DefaultHttpClient client = new DefaultHttpClient();
-        client.setCredentialsProvider(credentialsProvider);
+    // update user summary
+    DefaultHttpClient client = new DefaultHttpClient();
+    client.setCredentialsProvider(credentialsProvider);
 
-        HttpComponentsClientHttpRequestFactory contextAwareHttpRequestFactory = new PreEmptiveAuthHttpRequestFactory(client);
+    HttpComponentsClientHttpRequestFactory contextAwareHttpRequestFactory =
+        new PreEmptiveAuthHttpRequestFactory(client);
 
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(contextAwareHttpRequestFactory);
-        return restTemplate;
-    }
+    RestTemplate restTemplate = new RestTemplate();
+    restTemplate.setRequestFactory(contextAwareHttpRequestFactory);
+    return restTemplate;
+  }
 }

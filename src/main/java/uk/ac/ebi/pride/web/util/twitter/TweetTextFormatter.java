@@ -13,5 +13,5 @@ import java.util.Collection;
  */
 public interface TweetTextFormatter {
 
-    public Collection<Tweet> format(Collection<Tweet> tweets);
+  public Collection<Tweet> format(Collection<Tweet> tweets);
 }
